@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_results.css') }}">
+</head>
+<body>
+    <h1>Search Results</h1>
+
+    <!-- Search Form -->
+    <form method="get" action="{{ url_for('search_files') }}">
+        <input type="text" name="query" value="{{ query }}" placeholder="Search for files...">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <ul>
+            {% for doc in results %}
+                <li>
+                    {{ doc.filename }} - <a href="{{ url_for('download_file', filename=doc.filename) }}">Download</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+
+    <!-- Show All Files Button -->
+    <form method="get" action="{{ url_for('search_documents') }}">
+    <input type="text" name="query" value="{{ query }}" placeholder="Search files...">
+    <button type="submit">Search</button>
+</form>
+
+
+    <a href="{{ url_for('index') }}">Go back to homepage</a>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_results.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Search Results</h1>
+
+        {% if documents %}
+            <ul class="search-results">
+                {% for doc in documents %}
+                    <li class="result-item">
+                        <span>{{ doc.filename }}</span> 
+                        - <a href="{{ url_for('download_file', filename=doc.filename) }}" class="download-link">Download</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No documents found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

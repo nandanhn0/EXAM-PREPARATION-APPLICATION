@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXAM PREPARATION APPLICATION</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>EXAM PREPARATION APPLICATION</h1>
+
+        <!-- Upload Section -->
+        <div id="upload-section">
+            <h2>Upload Study Material</h2>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" id="file" required>
+                <input type="text" name="file_name" placeholder="Enter File Name" required>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <!-- Search Section -->
+        <div id="search-section">
+            <h2>Search Study Material</h2>
+            <form action="/search" method="GET">
+                <input type="text" name="query" id="search-query" placeholder="Search files..." required>
+                <button type="submit">Search</button>
+            </form>
+            <div id="search-suggestions"></div>
+        </div>
+
+        <!-- Semester Selection -->
+        <div id="semester-selection">
+            <h2>Select Semester</h2>
+            <button onclick="showSemesterSubjects(1)">Sem 1</button>
+            <button onclick="showSemesterSubjects(2)">Sem 2</button>
+            <button onclick="showSemesterSubjects(3)">Sem 3</button>
+            <button onclick="showSemesterSubjects(4)">Sem 4</button>
+            <button onclick="showSemesterSubjects(5)">Sem 5</button>
+            <button onclick="showSemesterSubjects(6)">Sem 6</button>
+            <button onclick="showSemesterSubjects(7)">Sem 7</button>
+            <button onclick="showSemesterSubjects(8)">Sem 8</button>
+        </div>
+
+        <!-- Subject and Module Display -->
+        <div id="subject-selection"></div>
+        <div id="module-selection"></div>
+        <h3 id="module-name"></h3>
+        <div id="youtube-link"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

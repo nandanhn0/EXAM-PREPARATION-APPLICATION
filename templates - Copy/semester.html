@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester {{ semester }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Semester {{ semester }} Subjects</h1>
+        <ul class="subjects-list">
+            {% for subject in subjects %}
+                <li>
+                    <a href="#">{{ subject }}</a> <!-- Add logic to display modules for each subject -->
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="left-section">
+            <h3>File Upload</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <select name="semester" required>
+                    <option value="Semester 1">Semester 1</option>
+                    <option value="Semester 2">Semester 2</option>
+                    <option value="Semester 3">Semester 3</option>
+                    <!-- Add more semesters as needed -->
+                </select>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+        <div class="right-section">
+            <h3>Semester Selection</h3>
+            <button onclick="location.href='/semester/1'">Semester 1</button>
+            <button onclick="location.href='/semester/2'">Semester 2</button>
+            <button onclick="location.href='/semester/3'">Semester 3</button>
+        </div>
+    </div>
+
+    <!-- Link to search page -->
+    <div class="search-container">
+        <a href="{{ url_for('search') }}">Search Uploaded Files</a>
+    </div>
+</body>
+</html>
