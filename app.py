@@ -6,6 +6,7 @@ import os
 import time
 
 MAX_UPLOAD_SIZE_MB = 16
+# Cache search suggestions in short time buckets so stale results self-refresh.
 SUGGESTION_CACHE_TTL_SECONDS = 60
 
 app = Flask(__name__)
@@ -15,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///study_material.db'  # Databas
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Folder to store uploaded files under 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'txt', 'pptx', 'xlsx'}  # Allowed file types
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['MAX_CONTENT_LENGTH'] = MAX_UPLOAD_SIZE_MB * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = MAX_UPLOAD_SIZE_MB * 1024 * 1024  # Reject uploads larger than 16 MB.
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24 * 30
 db = SQLAlchemy(app)
 
@@ -119,6 +120,7 @@ def search_suggestions():
     query = normalize_query(request.args.get('query'))
     if len(query) < 2:
         return jsonify([])
+    # Bucketed cache key refreshes suggestion cache every minute.
     cache_bucket = int(time.time() // SUGGESTION_CACHE_TTL_SECONDS)
     return jsonify(get_search_suggestions(query, cache_bucket))
 

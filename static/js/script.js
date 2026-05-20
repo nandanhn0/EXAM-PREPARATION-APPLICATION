@@ -116,6 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
             searchSuggestions.innerHTML = "";
             searchInput.focus();
         });
-        window.addEventListener("beforeunload", () => loadSuggestions.cancel());
+        window.addEventListener("pagehide", () => loadSuggestions.cancel());
     }
 });
