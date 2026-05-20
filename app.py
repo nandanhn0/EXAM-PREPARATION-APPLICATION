@@ -1,9 +1,10 @@
+import os
+import time
 from functools import lru_cache
+
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
-import os
-import time
 
 MAX_UPLOAD_SIZE_MB = 16
 # Cache search suggestions in short time buckets so stale results self-refresh.
@@ -12,7 +13,7 @@ SUGGESTION_CACHE_TTL_SECONDS = 60
 app = Flask(__name__)
 
 # Configurations for the app
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///study_material.db'  # Database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///study_material.db')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Folder to store uploaded files under 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'txt', 'pptx', 'xlsx'}  # Allowed file types
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -125,4 +126,4 @@ def search_suggestions():
     return jsonify(get_search_suggestions(query, cache_bucket))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', '5000')), debug=False)
