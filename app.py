@@ -51,10 +51,10 @@ def upload_file():
     file = request.files['file']
     original_filename = secure_filename(file.filename)
     if file and allowed_file(original_filename):  # Validate file extension
-        custom_name = secure_filename(request.form.get('file_name', '').strip())
+        requested_name = secure_filename(request.form.get('file_name', '').strip())
         name_root, extension = os.path.splitext(original_filename)
-        if custom_name:
-            name_root = os.path.splitext(custom_name)[0] or name_root
+        if requested_name:
+            name_root = os.path.splitext(requested_name)[0] or name_root
         filename = get_unique_filename(f"{name_root}{extension.lower()}")
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
