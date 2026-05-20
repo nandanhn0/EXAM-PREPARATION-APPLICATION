@@ -76,10 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const debounce = (fn, delay) => {
         let timerId;
-        return (...args) => {
+        const debounced = (...args) => {
             clearTimeout(timerId);
             timerId = setTimeout(() => fn(...args), delay);
         };
+        debounced.cancel = () => clearTimeout(timerId);
+        return debounced;
     };
 
     const loadSuggestions = debounce(async (query) => {
@@ -114,5 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
             searchSuggestions.innerHTML = "";
             searchInput.focus();
         });
+        window.addEventListener("beforeunload", () => loadSuggestions.cancel());
     }
 });

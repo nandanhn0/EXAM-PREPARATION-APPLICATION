@@ -3,6 +3,10 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
+import time
+
+MAX_UPLOAD_SIZE_MB = 16
+SUGGESTION_CACHE_TTL_SECONDS = 60
 
 app = Flask(__name__)
 
@@ -11,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///study_material.db'  # Databas
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Folder to store uploaded files under 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'txt', 'pptx', 'xlsx'}  # Allowed file types
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = MAX_UPLOAD_SIZE_MB * 1024 * 1024
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24 * 30
 db = SQLAlchemy(app)
 
@@ -78,7 +82,7 @@ def normalize_query(raw_query):
     return (raw_query or '').strip()
 
 @lru_cache(maxsize=256)
-def get_search_suggestions(query):
+def get_search_suggestions(query, cache_bucket):
     normalized_query = query.lower()
     records = (
         db.session.query(StudyMaterial.filename)
@@ -115,7 +119,8 @@ def search_suggestions():
     query = normalize_query(request.args.get('query'))
     if len(query) < 2:
         return jsonify([])
-    return jsonify(get_search_suggestions(query))
+    cache_bucket = int(time.time() // SUGGESTION_CACHE_TTL_SECONDS)
+    return jsonify(get_search_suggestions(query, cache_bucket))
 
 if __name__ == "__main__":
     app.run(debug=True)
