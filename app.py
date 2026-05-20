@@ -79,9 +79,10 @@ def normalize_query(raw_query):
 
 @lru_cache(maxsize=256)
 def get_search_suggestions(query):
+    normalized_query = query.lower()
     records = (
         db.session.query(StudyMaterial.filename)
-        .filter(StudyMaterial.filename.ilike(f'%{query}%'))
+        .filter(StudyMaterial.filename.ilike(f'%{normalized_query}%'))
         .order_by(StudyMaterial.filename.asc())
         .limit(8)
         .all()
@@ -111,7 +112,7 @@ def search_documents():
 
 @app.route('/api/search_suggestions', methods=['GET'])
 def search_suggestions():
-    query = normalize_query(request.args.get('query')).lower()
+    query = normalize_query(request.args.get('query'))
     if len(query) < 2:
         return jsonify([])
     return jsonify(get_search_suggestions(query))
