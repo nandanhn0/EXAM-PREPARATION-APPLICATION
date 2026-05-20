@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .map((name) => `<p><button type="button" class="suggestion-button" data-value="${name}">${name}</button></p>`)
                 .join("");
         } catch (_error) {
+            console.error("Failed to fetch suggestions:", _error);
             searchSuggestions.innerHTML = "";
         }
     }, 250);
