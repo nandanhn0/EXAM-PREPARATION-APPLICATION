@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_results.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <main class="container">
     <h1>Search Results</h1>
 
-    <!-- Search Form -->
-    <form method="get" action="{{ url_for('search_files') }}">
-        <input type="text" name="query" value="{{ query }}" placeholder="Search for files...">
+    <form class="card" method="get" action="{{ url_for('search_files') }}">
+        <label for="query">Search for files</label>
+        <input id="query" type="text" name="query" value="{{ query }}" placeholder="Search for files...">
         <button type="submit">Search</button>
     </form>
 
     {% if results %}
-        <ul>
+        <ul class="results-list card">
             {% for doc in results %}
                 <li>
                     {{ doc.filename }} - <a href="{{ url_for('download_file', filename=doc.filename) }}">Download</a>
@@ -24,16 +25,22 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>No results found.</p>
+        <p class="card">No results found.</p>
     {% endif %}
 
-    <!-- Show All Files Button -->
-    <form method="get" action="{{ url_for('search_documents') }}">
-    <input type="text" name="query" value="{{ query }}" placeholder="Search files...">
-    <button type="submit">Search</button>
-</form>
+    {% if pagination and pagination.pages > 1 %}
+        <nav class="pagination" aria-label="Search result pages">
+            {% if pagination.has_prev %}
+                <a href="{{ url_for('search_files', query=query, page=pagination.prev_num) }}">Previous</a>
+            {% endif %}
+            <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+            {% if pagination.has_next %}
+                <a href="{{ url_for('search_files', query=query, page=pagination.next_num) }}">Next</a>
+            {% endif %}
+        </nav>
+    {% endif %}
 
-
-    <a href="{{ url_for('index') }}">Go back to homepage</a>
+    <p><a href="{{ url_for('index') }}">Go back to homepage</a></p>
+    </main>
 </body>
 </html>

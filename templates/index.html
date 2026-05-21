@@ -3,143 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXAM PREPARATION APPLICATION</title>
+    <title>Exam Preparation Application</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>EXAM PREPARATION APPLICATION</h1>
+    <main class="container">
+        <header class="hero">
+            <h1>Exam Preparation Application</h1>
+            <p>Upload study material, search resources quickly, and discover semester-wise learning playlists.</p>
+        </header>
 
-        <!-- Upload Section -->
-        <div id="upload-section">
-            <h2>Upload Study Material</h2>
+        <section id="upload-section" class="card" aria-labelledby="upload-heading">
+            <h2 id="upload-heading">Upload Study Material</h2>
             <form action="/upload" method="POST" enctype="multipart/form-data">
+                <label for="file">Document</label>
                 <input type="file" name="file" id="file" required>
-                <input type="text" name="file_name" placeholder="Enter File Name" required>
+                <label for="file_name">Display name (optional)</label>
+                <input type="text" name="file_name" id="file_name" placeholder="Enter display name (optional)">
                 <button type="submit">Upload</button>
             </form>
-        </div>
+        </section>
 
-        <!-- Search Section -->
-        <div id="search-section">
-            <h2>Search Study Material</h2>
+        <section id="search-section" class="card" aria-labelledby="search-heading">
+            <h2 id="search-heading">Search Study Material</h2>
             <form action="/search" method="GET">
-                <input type="text" name="query" id="search-query" placeholder="Search files..." required>
+                <label for="search-query">Search files</label>
+                <input type="text" name="query" id="search-query" placeholder="Search files..." required autocomplete="off">
                 <button type="submit">Search</button>
             </form>
-            <div id="search-suggestions"></div>
-        </div>
+            <div id="search-suggestions" aria-live="polite"></div>
+        </section>
 
-        <!-- Semester Selection -->
-        <div id="semester-selection">
-            <h2>Select Semester</h2>
-            <button onclick="showSemesterSubjects(1)">Sem 1</button>
-            <button onclick="showSemesterSubjects(2)">Sem 2</button>
-            <button onclick="showSemesterSubjects(3)">Sem 3</button>
-            <button onclick="showSemesterSubjects(4)">Sem 4</button>
-            <button onclick="showSemesterSubjects(5)">Sem 5</button>
-            <button onclick="showSemesterSubjects(6)">Sem 6</button>
-            <button onclick="showSemesterSubjects(7)">Sem 7</button>
-            <button onclick="showSemesterSubjects(8)">Sem 8</button>
-        </div>
+        <section id="semester-selection" class="card" aria-labelledby="semester-heading">
+            <h2 id="semester-heading">Select Semester</h2>
+            <div class="button-grid">
+                {% for semester in range(1, 9) %}
+                    <button type="button" class="semester-button" data-semester="{{ semester }}">Sem {{ semester }}</button>
+                {% endfor %}
+            </div>
+        </section>
 
-        <!-- Subject and Module Display -->
-        <div id="subject-selection"></div>
-        <div id="module-selection"></div>
-        <h3 id="module-name"></h3>
-        <div id="youtube-link"></div>
-    </div>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
-    <script>
-        // Auto-scroll to a specific section when the page loads
-        window.onload = function () {
-            const allFilesSection = document.getElementById('subject-selection');
-            allFilesSection.scrollIntoView({ behavior: 'smooth' });
-        };
-
-        // Show semester subjects and scroll to the subject section
-        function showSemesterSubjects(semester) {
-            // Create a map of semesters to their subjects
-            const semesterSubjects = {
-                1: ["Subject 1", "Subject 2"],
-                2: ["Subject 3", "Subject 4"],
-                3: ["Subject 5", "Subject 6"],
-                4: ["Subject 7", "Subject 8"],
-                5: ["Subject 9", "Subject 10"],
-                6: ["Subject 11", "Subject 12"],
-                7: ["Subject 13", "Subject 14"],
-                8: ["Subject 15", "Subject 16"]
-            };
-
-            const subjects = semesterSubjects[semester] || [];
-            let subjectHTML = `<h3>Subjects for Semester ${semester}</h3>`;
-            
-            subjects.forEach(subject => {
-                subjectHTML += `<button class="subject-button" data-subject="${subject}">${subject}</button>`;
-            });
-
-            document.getElementById("subject-selection").innerHTML = subjectHTML;
-
-            // Scroll to the subject selection section
-            document.getElementById('subject-selection').scrollIntoView({ behavior: 'smooth' });
-
-            const subjectButtons = document.querySelectorAll(".subject-button");
-            subjectButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const subject = button.dataset.subject;
-                    showModules(subject);
-                });
-            });
-        }
-
-        // Show modules for the selected subject
-        function showModules(subject) {
-            const subjectModules = {
-                "Subject 1": ["Module 1", "Module 2", "Module 3"],
-                "Subject 2": ["Module 4", "Module 5", "Module 6"],
-                "Subject 3": ["Module 7", "Module 8", "Module 9"]
-                // Add more subjects and their modules here
-            };
-
-            const modules = subjectModules[subject] || ["No Modules Available"];
-            let moduleHTML = `<h3>Modules for ${subject}</h3>`;
-
-            modules.forEach(module => {
-                moduleHTML += `<button class="module-button" data-module="${module}">${module}</button>`;
-            });
-
-            document.getElementById("module-selection").innerHTML = moduleHTML;
-
-            // Scroll to the module selection section
-            document.getElementById('module-selection').scrollIntoView({ behavior: 'smooth' });
-
-            const moduleButtons = document.querySelectorAll(".module-button");
-            moduleButtons.forEach(button => {
-                button.addEventListener("click", function () {
-                    const module = button.dataset.module;
-                    showModuleDetails(subject, module);
-                });
-            });
-        }
-
-        // Show module details (e.g., YouTube link)
-        function showModuleDetails(subject, module) {
-            const youtubeLinks = {
-                "Subject 1 Module 1": "https://youtube.com/playlist?list=PLsptxgQdqTVfS_6tg6DpbOqHlI0JLIpOj",
-                "Subject 2 Module 1": "https://youtube.com/playlist?list=PLxCzCOWd7aiGmXg4NoX6R31AsC5LeCPHe",
-                // Add more module links here
-            };
-
-            const moduleName = `${subject} ${module}`;
-            const youtubeLink = youtubeLinks[moduleName] || "#";
-
-            document.getElementById("module-name").textContent = moduleName;
-            document.getElementById("youtube-link").innerHTML = youtubeLink !== "#"
-                ? `<a href="${youtubeLink}" target="_blank">Watch on YouTube</a>`
-                : `<p>No video link available.</p>`;
-        }
-    </script>
+        <section class="card">
+            <div id="subject-selection"></div>
+            <div id="module-selection"></div>
+            <h3 id="module-name"></h3>
+            <div id="youtube-link"></div>
+        </section>
+    </main>
+    <noscript>
+        <p class="noscript-note">Enable JavaScript to use semester navigation and live suggestions.</p>
+    </noscript>
 </body>
 </html>

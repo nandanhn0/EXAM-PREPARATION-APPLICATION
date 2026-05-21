@@ -1,132 +1,197 @@
-/* General Styles */
+:root {
+    --bg-start: #0b1021;
+    --bg-end: #111a3a;
+    --surface: rgba(255, 255, 255, 0.94);
+    --surface-soft: rgba(243, 247, 255, 0.95);
+    --text: #15213f;
+    --text-soft: #4f5f83;
+    --primary: #3f66ff;
+    --primary-strong: #2a4ede;
+    --accent: #18b5a8;
+    --border: #d8e0f8;
+    --shadow: 0 14px 40px rgba(10, 20, 48, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    background: linear-gradient(120deg, #84fab0, #8fd3f4);
-    color: #333;
     min-height: 100vh;
+    font-family: "Segoe UI", "Inter", Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+    color: var(--text);
 }
 
 .container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 16px 56px;
+    display: grid;
+    gap: 20px;
 }
 
-/* Header Styles */
-h1 {
+.hero {
     text-align: center;
-    font-size: 2.5em;
-    color: #0066cc;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+    color: #f3f7ff;
 }
 
-/* Form Styles */
+.hero h1 {
+    margin-bottom: 12px;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.hero p {
+    margin: 0;
+    color: #ccdbff;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 18px;
+}
+
+h1,
+h2,
+h3 {
+    margin-top: 0;
+}
+
 form {
-    margin-bottom: 30px;
+    display: grid;
+    gap: 12px;
 }
 
-input[type="file"], input[type="text"] {
+label {
+    font-weight: 600;
+    color: var(--text);
+}
+
+input[type="file"],
+input[type="text"] {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 1em;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--surface-soft);
 }
 
-button, input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
+button,
+a {
+    transition: all 0.2s ease;
+}
+
+button {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 14px;
+    background: linear-gradient(120deg, var(--primary), var(--accent));
     color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-button:hover, input[type="submit"]:hover {
-    background-color: #218838;
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
 }
 
-/* Semester Buttons */
-#semester-selection button {
-    margin: 10px 5px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(63, 102, 255, 0.35);
+    outline-offset: 2px;
 }
 
-#semester-selection button:hover {
-    background-color: #0056b3;
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
 }
 
-/* Modules and Subjects */
-#subject-selection, #module-selection {
-    margin: 20px 0;
+#subject-selection,
+#module-selection {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.subject-button,
+.module-button {
+    text-align: left;
 }
 
 #module-name {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 10px 0;
+    margin-bottom: 8px;
 }
 
 a {
-    color: #007bff;
+    color: var(--primary-strong);
+    font-weight: 600;
     text-decoration: none;
-    font-weight: bold;
 }
 
 a:hover {
-    color: #0056b3;
+    text-decoration: underline;
 }
 
-/* Search Suggestions */
-#search-suggestions {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+.results-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.results-list li {
+    margin-bottom: 8px;
+    color: var(--text-soft);
+}
+
+.pagination {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #f3f7ff;
 }
 
 #search-suggestions p {
-    margin: 0;
-    padding: 5px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
+    margin: 0 0 8px;
 }
 
-#search-suggestions p:hover {
-    background-color: #f8f9fa;
+.suggestion-button {
+    width: 100%;
+    text-align: left;
+    background: #eef3ff;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
-/* Responsive Design */
+.noscript-note {
+    text-align: center;
+    color: #f8fbff;
+    margin: 0 0 24px;
+}
+
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2em;
+    .container {
+        padding: 18px 12px 42px;
     }
 
-    input[type="file"], input[type="text"], button, input[type="submit"] {
-        font-size: 0.9em;
-        padding: 8px;
+    .card {
+        border-radius: 14px;
+        padding: 14px;
     }
+}
 
-    #semester-selection button {
-        font-size: 0.9em;
+@media (max-width: 320px) {
+    .button-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     }
 }
